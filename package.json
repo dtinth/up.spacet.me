@@ -4,12 +4,26 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port ${PORT:-20507}",
+    "preview": "vite preview --port ${PORT:-20507}",
     "build": "tsc && vite build",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@uppy/audio": "^1.1.1",
+    "@uppy/compressor": "^1.0.2",
+    "@uppy/core": "^3.2.0",
+    "@uppy/dashboard": "^3.4.0",
+    "@uppy/drag-drop": "^3.0.2",
+    "@uppy/file-input": "^3.0.2",
+    "@uppy/image-editor": "^2.1.2",
+    "@uppy/progress-bar": "^3.0.2",
+    "@uppy/react": "^3.1.2",
+    "@uppy/screen-capture": "^3.1.1",
+    "@uppy/status-bar": "^3.1.1",
+    "@uppy/webcam": "^3.3.1",
+    "@uppy/xhr-upload": "^3.2.0",
+    "bootstrap": "5.3.0-alpha3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
