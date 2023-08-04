@@ -3,6 +3,7 @@ import Webcam from "@uppy/webcam";
 import ImageEditor from "@uppy/image-editor";
 import ScreenCapture from "@uppy/screen-capture";
 import Audio from "@uppy/audio";
+import XHR from "@uppy/xhr-upload";
 
 import "@uppy/core/dist/style.min.css";
 import "@uppy/dashboard/dist/style.min.css";
@@ -11,6 +12,7 @@ import "@uppy/image-editor/dist/style.min.css";
 import "@uppy/screen-capture/dist/style.min.css";
 import "@uppy/audio/dist/style.min.css";
 import { UppyFile } from "@uppy/core";
+import { uploadUrlStore, uploadedStuffStore } from "./state";
 
 class MyUploader extends BasePlugin {
   constructor(uppy: Uppy) {
@@ -47,5 +49,14 @@ export const uppy = new Uppy()
   .use(Webcam)
   .use(ImageEditor, {})
   .use(ScreenCapture)
-  .use(MyUploader)
+  // .use(MyUploader)
+  .use(XHR, {})
   .use(Audio);
+
+uppy.on("upload-success", (file, response) => {
+  uploadedStuffStore.set([...uploadedStuffStore.get(), { file, response }]);
+});
+
+uploadUrlStore.subscribe((url) => {
+  uppy.getPlugin("XHRUpload")?.setOptions({ endpoint: url });
+});
