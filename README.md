@@ -9,13 +9,13 @@ Thanks to Uppy and its plugins, you can:
 - [Drag files into the drop zone.](https://uppy.io/docs/dashboard/)
 - Paste images from clipboard.
 - [Capture an image from a camera.](https://uppy.io/docs/webcam/)
-- [Capture the screen.](https://uppy.io/docs/screen-capture/)https://uppy.io/docs/screen-capture/
-- [Record audio.](https://uppy.io/docs/audio/)https://uppy.io/docs/audio/
+- [Capture the screen.](https://uppy.io/docs/screen-capture/)
+- [Record audio.](https://uppy.io/docs/audio/)
 
 ## Image editing and optimization
 
 - [Images are automatically compressed into `webp` file.](https://uppy.io/docs/compressor/)
-- [You can edit the image thanks to its built-in image editor.](https://uppy.io/docs/image-editor/)https://uppy.io/docs/image-editor/
+- [You can edit the image thanks to its built-in image editor.](https://uppy.io/docs/image-editor/)
 
 ## Upload target
 
