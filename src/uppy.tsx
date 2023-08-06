@@ -26,6 +26,15 @@ export const uppy = new Uppy()
   .use(XHR, { endpoint: "" })
   .use(Audio);
 
+uppy.addPreProcessor(async (ids) => {
+  for (const id of ids) {
+    const file = uppy.getFile(id);
+    if (file.name && file.meta.name !== file.name) {
+      file.meta.name = file.name;
+    }
+  }
+});
+
 uppy.on("upload-success", (file, response) => {
   uploadedStuffStore.set([...uploadedStuffStore.get(), { file, response }]);
 });
