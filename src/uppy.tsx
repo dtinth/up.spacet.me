@@ -42,3 +42,29 @@ uppy.on("upload-success", (file, response) => {
 uploadUrlStore.subscribe((url) => {
   uppy.getPlugin("XHRUpload")?.setOptions({ endpoint: url });
 });
+
+window.addEventListener(
+  "paste",
+  (e) => {
+    const { clipboardData } = e;
+    if (!clipboardData) return;
+
+    if (
+      clipboardData.types.length === 1 &&
+      clipboardData.types[0] === "text/plain"
+    ) {
+      const text = clipboardData.getData("text/plain");
+      if (text.startsWith("<svg")) {
+        e.preventDefault();
+        const file = new File([text], "image.svg", { type: "image/svg+xml" });
+        uppy.addFile({
+          name: "image.svg",
+          type: "image/svg+xml",
+          data: file,
+          source: "clipboard",
+        });
+      }
+    }
+  },
+  true
+);
