@@ -14,11 +14,23 @@ import "@uppy/screen-capture/dist/style.min.css";
 import "@uppy/audio/dist/style.min.css";
 import { uploadUrlStore, uploadedStuffStore } from "./state";
 
+class ImageCompressor extends Compressor {
+  async prepareUpload(fileIDs: string[]) {
+    // Filter out files that don’t end with `.png`
+    const effectiveIDs = fileIDs.filter((fileID) => {
+      const file = this.uppy.getFile(fileID);
+      return file.name.endsWith(".png");
+    });
+    // @ts-expect-error - The `prepareUpload` method was not included in the type definition
+    return super.prepareUpload(effectiveIDs);
+  }
+}
+
 export const uppy = new Uppy()
   .use(Webcam)
   .use(ImageEditor, {})
   .use(ScreenCapture)
-  .use(Compressor, {
+  .use(ImageCompressor, {
     quality: 0.85,
     convertSize: 128 * 1024,
     mimeType: "image/webp",
