@@ -1,26 +1,32 @@
+import Audio from "@uppy/audio";
+import Compressor, { CompressorOptions } from "@uppy/compressor";
 import Uppy from "@uppy/core";
-import Webcam from "@uppy/webcam";
 import ImageEditor from "@uppy/image-editor";
 import ScreenCapture from "@uppy/screen-capture";
-import Audio from "@uppy/audio";
+import Webcam from "@uppy/webcam";
 import XHR from "@uppy/xhr-upload";
-import Compressor, { CompressorOptions } from "@uppy/compressor";
 
+import "@uppy/audio/dist/style.min.css";
 import "@uppy/core/dist/style.min.css";
 import "@uppy/dashboard/dist/style.min.css";
-import "@uppy/webcam/dist/style.min.css";
 import "@uppy/image-editor/dist/style.min.css";
 import "@uppy/screen-capture/dist/style.min.css";
-import "@uppy/audio/dist/style.min.css";
-import { uploadUrlStore, uploadedStuffStore } from "./state";
+import "@uppy/webcam/dist/style.min.css";
+import {
+  compressImagesStore,
+  uploadUrlStore,
+  uploadedStuffStore,
+} from "./state";
 
 class ImageCompressor extends Compressor {
   async prepareUpload(fileIDs: string[]) {
     // Filter out files that don’t end with `.png`
-    const effectiveIDs = fileIDs.filter((fileID) => {
-      const file = this.uppy.getFile(fileID);
-      return file.name.endsWith(".png");
-    });
+    const effectiveIDs = compressImagesStore.get()
+      ? fileIDs.filter((fileID) => {
+          const file = this.uppy.getFile(fileID);
+          return file.name.endsWith(".png");
+        })
+      : [];
     // @ts-expect-error - The `prepareUpload` method was not included in the type definition
     return super.prepareUpload(effectiveIDs);
   }

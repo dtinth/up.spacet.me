@@ -1,7 +1,11 @@
-import { atom } from "nanostores";
 import { persistentAtom } from "@nanostores/persistent";
+import { atom } from "nanostores";
 
-export const uploadUrlStore = persistentAtom("uploadUrl", "");
+export const uploadUrlStore = persistentAtom<string>("uploadUrl", "");
+export const compressImagesStore = persistentAtom<string>(
+  "compressImages",
+  "true"
+);
 export const uploadedStuffStore = atom<UploadedStuffItem[]>([]);
 
 export interface UploadedStuffItem {
@@ -18,4 +22,8 @@ uploadedStuffStore.listen((stuff) => {
   console.log("uploaded stuff", stuff);
 });
 
-Object.assign(window, { uploadedStuffStore, uploadUrlStore });
+Object.assign(window, {
+  uploadedStuffStore,
+  uploadUrlStore,
+  compressImagesStore,
+});
