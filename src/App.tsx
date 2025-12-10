@@ -102,6 +102,21 @@ function UploadedList() {
           <div className="text-muted text-truncate mt-2">
             {item.response.uploadURL}
           </div>
+          {item.altTextStatus === 'generating' && (
+            <div className="text-muted mt-2">
+              Generating alt text…
+            </div>
+          )}
+          {item.altTextStatus === 'success' && item.altText && (
+            <div className="mt-2">
+              <strong>Alt text:</strong> {item.altText}
+            </div>
+          )}
+          {item.altTextStatus === 'error' && (
+            <div className="text-danger mt-2">
+              {item.altTextError || 'Failed to generate alt text'}
+            </div>
+          )}
         </div>
       ))}
     </div>
