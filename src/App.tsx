@@ -81,6 +81,18 @@ function UploadedList() {
           <div className="d-flex justify-content-between align-items-center">
             <strong>{item.file.name}</strong>
             <div>
+              {item.file.name.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) && (
+                <button
+                  className="btn btn-sm btn-outline-secondary me-2"
+                  onClick={() => {
+                    const altText = item.altText || "";
+                    const markdown = `![${altText}](${item.response.uploadURL || ""})`;
+                    navigator.clipboard.writeText(markdown);
+                  }}
+                >
+                  <Icon icon="octicon:copy-16" /> Copy Markdown
+                </button>
+              )}
               <button
                 className="btn btn-sm btn-outline-secondary me-2"
                 onClick={() => {
