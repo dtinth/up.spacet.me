@@ -16,7 +16,9 @@ import {
   compressImagesStore,
   uploadUrlStore,
   uploadedStuffStore,
+  UploadedStuffItem,
 } from "./state";
+import { generateAltText } from "./altTextGenerator";
 
 class ImageCompressor extends Compressor {
   async prepareUpload(fileIDs: string[]) {
@@ -54,7 +56,49 @@ uppy.addPreProcessor(async (ids) => {
 });
 
 uppy.on("upload-success", (file, response) => {
-  uploadedStuffStore.set([...uploadedStuffStore.get(), { file, response }]);
+  if (file) {
+    const newItem: UploadedStuffItem = { file, response };
+    
+    // Check if file is an image
+    const isImage = file.type?.startsWith('image/');
+    
+    if (isImage) {
+      // Set initial status to generating
+      newItem.altTextStatus = 'generating';
+      uploadedStuffStore.set([...uploadedStuffStore.get(), newItem]);
+      
+      // Generate alt text asynchronously
+      generateAltText(file.data as Blob)
+        .then((altText) => {
+          // Update the item with the generated alt text
+          const items = uploadedStuffStore.get();
+          const itemIndex = items.findIndex(item => item.file.id === file.id);
+          if (itemIndex !== -1) {
+            items[itemIndex] = {
+              ...items[itemIndex],
+              altText,
+              altTextStatus: 'success',
+            };
+            uploadedStuffStore.set([...items]);
+          }
+        })
+        .catch((error) => {
+          // Update the item with the error
+          const items = uploadedStuffStore.get();
+          const itemIndex = items.findIndex(item => item.file.id === file.id);
+          if (itemIndex !== -1) {
+            items[itemIndex] = {
+              ...items[itemIndex],
+              altTextStatus: 'error',
+              altTextError: error.message,
+            };
+            uploadedStuffStore.set([...items]);
+          }
+        });
+    } else {
+      uploadedStuffStore.set([...uploadedStuffStore.get(), newItem]);
+    }
+  }
 });
 
 uploadUrlStore.subscribe((url) => {

@@ -16,6 +16,9 @@ export interface UploadedStuffItem {
   response: {
     uploadURL?: string;
   };
+  altText?: string;
+  altTextStatus?: 'generating' | 'success' | 'error';
+  altTextError?: string;
 }
 
 uploadedStuffStore.listen((stuff) => {
